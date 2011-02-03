@@ -25,6 +25,8 @@ globals =
     html += doctypes[key]
   esc: (str) ->
     str.replace /</g, '&lt;'
+  text: (str) ->
+    html += str
 
 for tag in tags
   do (tag) ->
@@ -39,11 +41,15 @@ for tag in tags
 
       for arg in args
         if typeof arg is 'function'
-          arg.call globals.thisArg
+          ret = arg.call globals.thisArg
+          if typeof ret is 'string'
+            html += ret
         else
           html += arg
 
       html += "</#{tag}>"
+
+      return
 
 for tag in tagsSelfClosing
   do (tag) ->
@@ -52,6 +58,8 @@ for tag in tagsSelfClosing
       if obj then for key, val of obj
         html += " #{key}=\"#{val}\""
       html += ">"
+
+      return
 
 @compile = (path) ->
   code = fs.readFileSync path, 'utf8'
