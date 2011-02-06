@@ -70,6 +70,5 @@ for tag in tagsSelfClosing
 @render = (fn, thisArg) ->
   globals.thisArg = thisArg
   fn.call thisArg, globals
-  ret = html
-  html = ''
+  [ret, html] = [html, '']
   ret
