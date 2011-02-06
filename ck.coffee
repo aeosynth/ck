@@ -17,7 +17,7 @@ html = ''
 tags = 'a abbr acronym address applet article aside audio b bdo big blockquote body button canvas caption center cite code colgroup command datalist dd del details dfn dir div dl dt em embed fieldset figcaption figure font footer form frameset h1 h2 h3 h4 h5 h6 head header hgroup html i iframe ins keygen kbd label legend li map mark menu meter nav noframes noscript object ol optgroup option output p pre progress q rp rt ruby s samp script section select small source span strike strong style sub summary sup table tbody td textarea tfoot th thead time title tr tt u ul var video wbr xmp'.split ' '
 tagsSelfClosing = 'area base basefont br col frame hr img input link meta param'.split ' '
 
-globals =
+scope =
   comment: (str) ->
     html += "<!--#{str}-->"
   doctype: (key=5) ->
@@ -29,7 +29,7 @@ globals =
 
 for tag in tags
   do (tag) ->
-    globals[tag] = (args...) ->
+    scope[tag] = (args...) ->
       html += "<#{tag}"
 
       if typeof args[0] is 'object'
@@ -40,7 +40,7 @@ for tag in tags
 
       for arg in args
         if typeof arg is 'function'
-          ret = arg.call globals.thisArg
+          ret = arg.call scope.thisArg
           if typeof ret is 'string'
             html += ret
         else
@@ -52,7 +52,7 @@ for tag in tags
 
 for tag in tagsSelfClosing
   do (tag) ->
-    globals[tag] = (obj) ->
+    scope[tag] = (obj) ->
       html += "<#{tag}"
       if obj then for key, val of obj
         html += " #{key}=\"#{val}\""
@@ -65,10 +65,10 @@ for tag in tagsSelfClosing
   @compileString code
 @compileString = (code) ->
   code = cs.compile code, bare: true
-  code = "with (globals) { #{code} }"
-  Function 'globals', code
+  code = "with (scope) { #{code} }"
+  Function 'scope', code
 @render = (fn, thisArg) ->
-  globals.thisArg = thisArg
-  fn.call thisArg, globals
+  scope.thisArg = thisArg
+  fn.call thisArg, scope
   [ret, html] = [html, '']
   ret
