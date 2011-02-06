@@ -2,7 +2,6 @@
 
 cs = require 'coffee-script'
 fs = require 'fs'
-vm = require 'vm'
 
 doctypes =
   '5': '<!DOCTYPE html>'
@@ -63,13 +62,14 @@ for tag in tagsSelfClosing
 
 @compile = (path) ->
   code = fs.readFileSync path, 'utf8'
-  @compileString code, path
-@compileString = (code, path) ->
+  @compileString code
+@compileString = (code) ->
   code = cs.compile code, bare: true
-  vm.createScript code, path
-@render = (script, thisArg) ->
+  code = "with (globals) { #{code} }"
+  Function 'globals', code
+@render = (fn, thisArg) ->
   globals.thisArg = thisArg
-  script.runInNewContext globals
+  fn.call thisArg, globals
   ret = html
   html = ''
   ret
