@@ -24,8 +24,6 @@ scope =
     html += doctypes[key]
   esc: (str) ->
     str.replace /</g, '&lt;'
-  text: (str) ->
-    html += str
 
 for tag in tags
   do (tag) ->
