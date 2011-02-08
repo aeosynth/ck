@@ -22,21 +22,6 @@ indent  = null
 newline = null
 thisArg = null
 
-reset = ->
-  html    = ''
-  indent  = ''
-  newline = '\n'
-
-reset()
-
-scope =
-  comment: (str) ->
-    html += "#{indent}<!--#{str}-->#{newline}"
-  doctype: (key=5) ->
-    html += "#{indent}#{doctypes[key]}#{newline}"
-  esc: (str) ->
-    str.replace /</g, '&lt;'
-
 compileTag = (tag, selfClosing) ->
   scope[tag] = (args...) ->
     html += "#{indent}<#{tag}"
@@ -61,6 +46,21 @@ compileTag = (tag, selfClosing) ->
     indent = indent.slice 0, -1 if newline
 
     html += "#{indent}</#{tag}>#{newline}"
+
+reset = ->
+  html    = ''
+  indent  = ''
+  newline = '\n'
+
+scope =
+  comment: (str) ->
+    html += "#{indent}<!--#{str}-->#{newline}"
+  doctype: (key=5) ->
+    html += "#{indent}#{doctypes[key]}#{newline}"
+  esc: (str) ->
+    str.replace /</g, '&lt;'
+
+reset()
 
 for tag in tagsNormal
   compileTag tag, false # don't self close
