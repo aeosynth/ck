@@ -17,14 +17,23 @@ doctypes =
 tagsNormal = 'a abbr acronym address applet article aside audio b bdo big blockquote body button canvas caption center cite code colgroup command datalist dd del details dfn dir div dl dt em embed fieldset figcaption figure font footer form frameset h1 h2 h3 h4 h5 h6 head header hgroup html i iframe ins keygen kbd label legend li map mark menu meter nav noframes noscript object ol optgroup option output p pre progress q rp rt ruby s samp script section select small source span strike strong style sub summary sup table tbody td textarea tfoot th thead time title tr tt u ul var video wbr xmp'.split ' '
 tagsSelfClosing = 'area base basefont br col frame hr img input link meta param'.split ' '
 
-html = ''
-indent = ''
+html    = null
+indent  = null
+newline = null
+thisArg = null
+
+reset = ->
+  html    = ''
+  indent  = ''
+  newline = '\n'
+
+reset()
 
 scope =
   comment: (str) ->
-    html += "#{indent}<!--#{str}-->\n"
+    html += "#{indent}<!--#{str}-->#{newline}"
   doctype: (key=5) ->
-    html += "#{indent}#{doctypes[key]}\n"
+    html += "#{indent}#{doctypes[key]}#{newline}"
   esc: (str) ->
     str.replace /</g, '&lt;'
 
@@ -39,19 +48,19 @@ compileTag = (tag, selfClosing) ->
         else
           html += " #{key}=\"#{val}\""
 
-    html += ">\n"
+    html += ">#{newline}"
 
     return if selfClosing
 
-    indent += ' '
+    indent += ' ' if newline
     for arg in args
       if typeof arg is 'function'
-        arg.call scope.thisArg
+        arg.call thisArg
       else
-        html += "#{indent}#{arg}\n"
-    indent = indent.slice 0, -1
+        html += "#{indent}#{arg}#{newline}"
+    indent = indent.slice 0, -1 if newline
 
-    html += "#{indent}</#{tag}>\n"
+    html += "#{indent}</#{tag}>#{newline}"
 
 for tag in tagsNormal
   compileTag tag, false # don't self close
@@ -65,8 +74,11 @@ for tag in tagsSelfClosing
   code = cs.compile code, bare: true
   code = "with (scope) { #{code} }"
   Function 'scope', code
-@render = (fn, thisArg) ->
-  scope.thisArg = thisArg
+@render = (fn, _thisArg, options) ->
+  thisArg = _thisArg
+  if options.compress
+    newline = ''
   fn.call thisArg, scope
-  [ret, html] = [html, '']
+  ret = html
+  reset()
   ret
