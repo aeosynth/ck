@@ -33,8 +33,7 @@ for tag in tags
       if typeof args[0] is 'object'
         for key, val of args.shift()
           if typeof val is 'boolean'
-            if val is true
-              html += " #{key}"
+            html += " #{key}" if val is true
           else
             html += " #{key}=\"#{val}\""
 
@@ -58,8 +57,7 @@ for tag in tagsSelfClosing
       html += "<#{tag}"
       if obj then for key, val of obj
         if typeof val is 'boolean'
-          if val is true
-            html += " #{key}"
+          html += " #{key}" if val is true
         else
           html += " #{key}=\"#{val}\""
       html += ">"
