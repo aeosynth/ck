@@ -24,7 +24,7 @@ thisArg = null
 
 compileTag = (tag, selfClosing) ->
   scope[tag] = (args...) ->
-    html += "#{indent}<#{tag}"
+    html += "#{newline}#{indent}<#{tag}"
 
     if typeof args[0] is 'object'
       for key, val of args.shift()
@@ -35,27 +35,23 @@ compileTag = (tag, selfClosing) ->
 
     html += ">"
 
-    if selfClosing
-      html += newline
-      return
+    return if selfClosing
 
-    if args.length
-      html += '\n'
+    for arg in args
+      if typeof arg is 'function'
+        indent += ' ' if newline
+        arg = arg.call thisArg
+        indent = indent.slice 0, -1 if newline
 
-      indent += ' ' if newline
-      for arg in args
-        if typeof arg is 'function'
-          arg = arg.call thisArg
-          continue if typeof arg is 'undefined'
-          # https://github.com/jashkenas/coffee-script/issues/issue/1081
-          # `coffee -e 'fn key: val, foo.bar'` throws an error, so we need
-          # to wrap up some things as function return values.
-        html += "#{indent}#{arg}#{newline}"
-      indent = indent.slice 0, -1 if newline
+        # https://github.com/jashkenas/coffee-script/issues/issue/1081
+        # `coffee -e 'fn key: val, foo.bar'` throws an error, so constants
+        # passed after implicit objects must be wrapped as a return value
+        if arg is undefined
+          html += "#{newline}#{indent}"
+          continue
+      html += arg
 
-      html += indent
-
-    html += "</#{tag}>#{newline}"
+    html += "</#{tag}>"
 
     return
 
@@ -66,10 +62,10 @@ reset = ->
 
 scope =
   comment: (str) ->
-    html += "#{indent}<!--#{str}-->#{newline}"
+    html += "#{newline}#{indent}<!--#{str}-->"
     return
   doctype: (key=5) ->
-    html += "#{indent}#{doctypes[key]}#{newline}"
+    html += "#{indent}#{doctypes[key]}"
     return
   esc: (str) ->
     str.replace /</g, '&lt;'
