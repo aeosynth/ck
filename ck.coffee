@@ -74,7 +74,7 @@ for tag in tagsSelfClosing
   code = cs.compile code, bare: true
   code = "with (scope) { #{code} }"
   Function 'scope', code
-@render = (fn, _thisArg, options) ->
+@render = (fn, _thisArg, options={}) ->
   thisArg = _thisArg
   if options.compress
     newline = ''
