@@ -40,12 +40,17 @@ compileTag = (tag, selfClosing) ->
     indent += ' ' if newline
     for arg in args
       if typeof arg is 'function'
-        arg.call thisArg
-      else
-        html += "#{indent}#{arg}#{newline}"
+        arg = arg.call thisArg
+        continue if typeof arg is 'undefined'
+        # https://github.com/jashkenas/coffee-script/issues/issue/1081
+        # `coffee -e 'fn key: val, foo.bar'` throws an error, so we need
+        # to wrap up some things as function return values.
+      html += "#{indent}#{arg}#{newline}"
     indent = indent.slice 0, -1 if newline
 
     html += "#{indent}</#{tag}>#{newline}"
+
+    return
 
 reset = ->
   html    = ''
@@ -55,8 +60,10 @@ reset = ->
 scope =
   comment: (str) ->
     html += "#{indent}<!--#{str}-->#{newline}"
+    return
   doctype: (key=5) ->
     html += "#{indent}#{doctypes[key]}#{newline}"
+    return
   esc: (str) ->
     str.replace /</g, '&lt;'
 
