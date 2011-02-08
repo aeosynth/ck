@@ -33,22 +33,29 @@ compileTag = (tag, selfClosing) ->
         else
           html += " #{key}=\"#{val}\""
 
-    html += ">#{newline}"
+    html += ">"
 
-    return if selfClosing
+    if selfClosing
+      html += newline
+      return
 
-    indent += ' ' if newline
-    for arg in args
-      if typeof arg is 'function'
-        arg = arg.call thisArg
-        continue if typeof arg is 'undefined'
-        # https://github.com/jashkenas/coffee-script/issues/issue/1081
-        # `coffee -e 'fn key: val, foo.bar'` throws an error, so we need
-        # to wrap up some things as function return values.
-      html += "#{indent}#{arg}#{newline}"
-    indent = indent.slice 0, -1 if newline
+    if args.length
+      html += '\n'
 
-    html += "#{indent}</#{tag}>#{newline}"
+      indent += ' ' if newline
+      for arg in args
+        if typeof arg is 'function'
+          arg = arg.call thisArg
+          continue if typeof arg is 'undefined'
+          # https://github.com/jashkenas/coffee-script/issues/issue/1081
+          # `coffee -e 'fn key: val, foo.bar'` throws an error, so we need
+          # to wrap up some things as function return values.
+        html += "#{indent}#{arg}#{newline}"
+      indent = indent.slice 0, -1 if newline
+
+      html += indent
+
+    html += "</#{tag}>#{newline}"
 
     return
 
