@@ -23,8 +23,10 @@ indent = ''
 scope =
   comment: (str) ->
     html += "#{indent}<!--#{str}-->\n"
+    return
   doctype: (key=5) ->
     html += "#{indent}#{doctypes[key]}\n"
+    return
   esc: (str) ->
     str.replace /</g, '&lt;'
 
@@ -47,6 +49,17 @@ compileTag = (tag, selfClosing) ->
     for arg in args
       if typeof arg is 'function'
         arg = arg.call scope.thisArg
+        ###
+          https://github.com/jashkenas/coffee-script/issues/issue/1119
+          $ coffee -bpe 'fn key: val, "str"'
+          fn({
+            key: val,
+            "str": "str"
+          });
+
+          constants following implicit objects become key/value pairs.
+          wrap them up as a function's return value.
+        ###
         continue if typeof arg is 'undefined'
       html += "#{indent}#{arg}\n"
     indent = indent.slice 0, -1
