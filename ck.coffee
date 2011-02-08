@@ -32,7 +32,11 @@ for tag in tags
 
       if typeof args[0] is 'object'
         for key, val of args.shift()
-          html += " #{key}=\"#{val}\""
+          if typeof val is 'boolean'
+            if val is true
+              html += " #{key}"
+          else
+            html += " #{key}=\"#{val}\""
 
       html += ">"
 
@@ -53,7 +57,11 @@ for tag in tagsSelfClosing
     scope[tag] = (obj) ->
       html += "<#{tag}"
       if obj then for key, val of obj
-        html += " #{key}=\"#{val}\""
+        if typeof val is 'boolean'
+          if val is true
+            html += " #{key}"
+        else
+          html += " #{key}=\"#{val}\""
       html += ">"
 
       return
