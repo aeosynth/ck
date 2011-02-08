@@ -48,7 +48,7 @@ compileTag = (tag, selfClosing) ->
       if typeof arg is 'function'
         arg = arg.call scope.thisArg
         continue if typeof arg is 'undefined'
-      html += indent + arg + '\n'
+      html += "#{indent}#{arg}\n"
     indent = indent.slice 0, -1
 
     html += "#{indent}</#{tag}>\n"
