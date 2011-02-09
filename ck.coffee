@@ -17,10 +17,10 @@ doctypes =
 tagsNormal = 'a abbr acronym address applet article aside audio b bdo big blockquote body button canvas caption center cite code colgroup command datalist dd del details dfn dir div dl dt em embed fieldset figcaption figure font footer form frameset h1 h2 h3 h4 h5 h6 head header hgroup html i iframe ins keygen kbd label legend li map mark menu meter nav noframes noscript object ol optgroup option output p pre progress q rp rt ruby s samp script section select small source span strike strong style sub summary sup table tbody td textarea tfoot th thead time title tr tt u ul var video wbr xmp'.split ' '
 tagsSelfClosing = 'area base basefont br col frame hr img input link meta param'.split ' '
 
+context = null
 html    = null
 indent  = null
 newline = null
-thisArg = null
 
 compileTag = (tag, selfClosing) ->
   scope[tag] = (args...) ->
@@ -40,7 +40,7 @@ compileTag = (tag, selfClosing) ->
     for arg in args
       if typeof arg is 'function'
         indent += ' ' if newline
-        arg = arg.call thisArg
+        arg = arg.call context
         indent = indent.slice 0, -1 if newline
 
         # https://github.com/jashkenas/coffee-script/issues/issue/1081
@@ -80,10 +80,10 @@ for tag in tagsSelfClosing
     else
       cs.compile code, bare: true
   Function 'scope', "with (scope) { #{code} }"
-@render = (fn, _thisArg, options={}) ->
-  thisArg = _thisArg
+@render = (fn, options={}) ->
+  {context, format} = options
   html    = ''
   indent  = ''
-  newline = if options.format then '\n' else ''
-  fn.call thisArg, scope
+  newline = if format then '\n' else ''
+  fn.call context, scope
   html
