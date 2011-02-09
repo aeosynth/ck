@@ -2,10 +2,10 @@ a smaller, faster [coffeekup](https://github.com/mauricemach/coffeekup)
 
 #subtractions
 
-no cache; you have to manage it on your own.
-no support for browsers, frameworks
-no cli tools
-no scope access (use context instead)
+* no cache; you have to manage it on your own.
+* no support for browsers, frameworks
+* no cli tools
+* no scope access (use context instead)
 
 #additions
 
@@ -18,8 +18,8 @@ compileFile:
 
 correctly handle booleans:
     template = -> input autocomplete: off
-    console.log ck.render ck.compile template
-    console.log coffeekup.render template
+    console.log ck.render ck.compile template #<input>
+    console.log coffeekup.render template #<input autocomplete="false" />
 
 #other
 
