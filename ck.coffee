@@ -55,11 +55,6 @@ compileTag = (tag, selfClosing) ->
 
     return
 
-reset = ->
-  html    = ''
-  indent  = ''
-  newline = '\n'
-
 scope =
   comment: (str) ->
     html += "#{newline}#{indent}<!--#{str}-->"
@@ -69,8 +64,6 @@ scope =
     return
   esc: (str) ->
     str.replace /</g, '&lt;'
-
-reset()
 
 for tag in tagsNormal
   compileTag tag, false # don't self close
@@ -89,9 +82,8 @@ for tag in tagsSelfClosing
   Function 'scope', "with (scope) { #{code} }"
 @render = (fn, _thisArg, options={}) ->
   thisArg = _thisArg
-  if options.compress
-    newline = ''
+  html    = ''
+  indent  = ''
+  newline = if options.format then '\n' else ''
   fn.call thisArg, scope
-  ret = html
-  reset()
-  ret
+  html
