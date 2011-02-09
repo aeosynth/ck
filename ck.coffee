@@ -77,13 +77,16 @@ for tag in tagsNormal
 for tag in tagsSelfClosing
   compileTag tag, true # self close
 
-@compile = (path) ->
+@compileFile = (path) ->
   code = fs.readFileSync path, 'utf8'
-  @compileString code
-@compileString = (code) ->
-  code = cs.compile code, bare: true
-  code = "with (scope) { #{code} }"
-  Function 'scope', code
+  @compile code
+@compile = (code) ->
+  code =
+    if typeof code is 'function'
+      code.toString().replace 'function () ', ''
+    else
+      cs.compile code, bare: true
+  Function 'scope', "with (scope) { #{code} }"
 @render = (fn, _thisArg, options={}) ->
   thisArg = _thisArg
   if options.compress
