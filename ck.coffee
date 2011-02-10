@@ -50,7 +50,7 @@ compileTag = (tag, selfClosing) ->
         if arg is undefined
           html += "#{newline}#{indent}"
           continue
-      html += arg
+      html += if options.autoescape then esc arg else arg
 
     html += "</#{tag}>"
 
