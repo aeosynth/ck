@@ -29,8 +29,8 @@ nest = (arg) ->
     indent = indent.slice 0, -1 if options.format
 
     # https://github.com/jashkenas/coffee-script/issues/issue/1081
-    # `coffee -e 'fn key: val, foo.bar'` throws an error, so constants
-    # passed after implicit objects must be wrapped as a return value
+    # `coffee -e 'fn key: val, foo.bar'` throws an error, so we have to
+    # wrap up property accessing in a function.
     if arg is undefined
       html += "#{newline}#{indent}"
       return
