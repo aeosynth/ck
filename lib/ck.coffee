@@ -74,6 +74,7 @@ scope =
     html += "#{newline}#{indent}<!--[if #{expr}]>"
     nest arg
     html += "<![endif]-->"
+    return
 
 for tag in tagsNormal
   compileTag tag, false # don't self close
