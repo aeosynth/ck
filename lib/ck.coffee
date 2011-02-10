@@ -71,6 +71,10 @@ scope =
     str
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
+  ie: (expr, arg) ->
+    html += "#{newline}#{indent}<!--[if #{expr}]>"
+    nest arg
+    html += "<![endif]-->"
 
 for tag in tagsNormal
   compileTag tag, false # don't self close
