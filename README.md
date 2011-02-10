@@ -26,6 +26,10 @@ correctly handle booleans:
     console.log ck.render ck.compile template #<input>
     console.log coffeekup.render template #<input autocomplete="false" />
 
+IE conditionals:
+    ie 'lt IE8', ->
+      link href: 'ie.css', rel: 'stylesheet'
+
 #other
 
 ck doesn't add slashes to self closing tags. I'm not actually sure what's right, see [this](http://stackoverflow.com/questions/348736/xhtml-is-writing-self-closing-tags-for-elements-not-traditionally-empty-bad-pra) for some reading....
