@@ -1,8 +1,10 @@
 a smaller, faster [coffeekup](https://github.com/mauricemach/coffeekup)
 
     $ cake bench
-    ck: 251ms
-    coffeekup: 287ms
+    ck: 268ms
+    ck (format): 316ms
+    coffeekup: 301ms
+    coffeekup (format): 974ms
 
 #subtractions
 

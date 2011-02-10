@@ -34,4 +34,6 @@ benchmark = (name, fn) ->
 
 exports =
     benchmark 'ck', -> ck.render ck_template, { context }
+    benchmark 'ck (format)', -> ck.render ck_template, { context, format: true }
     benchmark 'coffeekup', -> coffeekup_template { context }
+    benchmark 'coffeekup (format)', -> coffeekup_template { context, format: true }
