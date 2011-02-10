@@ -23,6 +23,20 @@ newline = null
 
 options = {}
 
+nest = (arg) ->
+  if typeof arg is 'function'
+    indent += ' ' if options.format
+    arg = arg.call options.context
+    indent = indent.slice 0, -1 if options.format
+
+    # https://github.com/jashkenas/coffee-script/issues/issue/1081
+    # `coffee -e 'fn key: val, foo.bar'` throws an error, so constants
+    # passed after implicit objects must be wrapped as a return value
+    if arg is undefined
+      html += "#{newline}#{indent}"
+      return
+  html += if options.autoescape then esc arg else arg
+
 compileTag = (tag, selfClosing) ->
   scope[tag] = (args...) ->
     html += "#{newline}#{indent}<#{tag}"
@@ -38,19 +52,7 @@ compileTag = (tag, selfClosing) ->
 
     return if selfClosing
 
-    for arg in args
-      if typeof arg is 'function'
-        indent += ' ' if options.format
-        arg = arg.call options.context
-        indent = indent.slice 0, -1 if options.format
-
-        # https://github.com/jashkenas/coffee-script/issues/issue/1081
-        # `coffee -e 'fn key: val, foo.bar'` throws an error, so constants
-        # passed after implicit objects must be wrapped as a return value
-        if arg is undefined
-          html += "#{newline}#{indent}"
-          continue
-      html += if options.autoescape then esc arg else arg
+    nest arg for arg in args
 
     html += "</#{tag}>"
 
