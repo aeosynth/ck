@@ -12,7 +12,7 @@ a smaller, faster [coffeekup](https://github.com/mauricemach/coffeekup)
 * must compile templates before rendering them
 * no support for browsers, frameworks
 * no cli tools
-* no scope access (use context instead)
+* no `scope` option (use context instead)
 
 #additions
 
