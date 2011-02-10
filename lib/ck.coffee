@@ -60,6 +60,7 @@ compileTag = (tag, selfClosing) ->
 scope =
   coffeescript: (fn) ->
     @script "(#{fn})();"
+    return
   comment: (str) ->
     html += "#{newline}#{indent}<!--#{str}-->"
     return
