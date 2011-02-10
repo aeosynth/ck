@@ -66,7 +66,9 @@ scope =
     html += "#{indent}#{doctypes[key]}"
     return
   esc: (str) ->
-    str.replace /</g, '&lt;'
+    str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
 
 for tag in tagsNormal
   compileTag tag, false # don't self close
