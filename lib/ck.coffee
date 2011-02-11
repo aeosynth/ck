@@ -68,9 +68,13 @@ scope =
     html += "#{indent}#{doctypes[key]}"
     return
   esc: (str) ->
-    str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
+    str.replace /[&<>"']/g, (c) ->
+      switch c
+        when '&' then '&amp;'
+        when '<' then '&lt;'
+        when '>' then '&gt;'
+        when '"' then '&quot;'
+        when "'" then '&#39;'
   ie: (expr, arg) ->
     html += "#{newline}#{indent}<!--[if #{expr}]>"
     nest arg
