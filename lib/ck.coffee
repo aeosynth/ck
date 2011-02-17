@@ -95,11 +95,11 @@ for tag in tagsSelfClosing
       code.toString().replace 'function () ', ''
     else
       cs.compile code, bare: true
-  Function 'scope', "with (scope) { #{code} }"
-@render = (fn, _options={}) ->
-  options = _options
-  html    = ''
-  indent  = ''
-  newline = if options.format then '\n' else ''
-  fn.call options.context, scope
-  html
+  fn = Function 'scope', "with (scope) { #{code} }"
+  (_options) ->
+    options = _options
+    html    = ''
+    indent  = ''
+    newline = if options.format then '\n' else ''
+    fn.call options.context, scope
+    html
