@@ -59,7 +59,7 @@ compileTag = (tag, selfClosing) ->
 
 scope =
   coffeescript: (fn) ->
-    @script "(#{fn})();"
+    @script fn.toString().replace 'function () ', ''
     return
   comment: (str) ->
     html += "#{newline}#{indent}<!--#{str}-->"
