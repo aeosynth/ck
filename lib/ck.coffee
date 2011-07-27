@@ -89,6 +89,7 @@ for tag in tagsSelfClosing
 @compileFile = (path) ->
   code = fs.readFileSync path, 'utf8'
   @compile code
+
 @compile = (code) ->
   code =
     if typeof code is 'function'
