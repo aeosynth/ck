@@ -1,0 +1,12 @@
+{
+  "name": "ck",
+  "description": "A smaller, faster Coffeekup.",
+  "version": "0.0.1",
+  "dependencies": {
+    "coffee-script": ">= 1.1.1"
+  },
+  "devDependencies": {
+    "coffeekup": ">= 0.2.3"
+  },
+  "engines": {"node": ">= 0.4.7"}
+}
