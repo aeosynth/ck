@@ -1,4 +1,4 @@
-ck = require 'ck'
+ck = require './lib/ck'
 coffeekup = require 'coffeekup'
 
 template = ->
@@ -33,7 +33,7 @@ benchmark = (name, fn) ->
   console.log "#{name}: #{end - start}ms"
 
 exports =
-    benchmark 'ck', -> ck.render ck_template, { context }
-    benchmark 'ck (format)', -> ck.render ck_template, { context, format: true }
-    benchmark 'coffeekup', -> coffeekup_template { context }
-    benchmark 'coffeekup (format)', -> coffeekup_template { context, format: true }
+  benchmark 'ck', -> ck_template context: context
+  benchmark 'ck (format)', -> ck_template context: context, format: true
+  benchmark 'coffeekup', -> coffeekup_template context: context
+  benchmark 'coffeekup (format)', -> coffeekup_template context: context, format: true

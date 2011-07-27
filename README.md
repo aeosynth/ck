@@ -19,13 +19,13 @@ a smaller, faster [coffeekup](https://github.com/mauricemach/coffeekup)
 compileFile:
 
     template = ck.compileFile './template.coffee'
-    html = ck.render template, context: user: {}
+    html = template context: user: {}
     console.log html
 
 correctly handle booleans:
 
     template = -> input autocomplete: off
-    console.log ck.render ck.compile template #<input>
+    console.log ck.compile(template)() #<input>
     console.log coffeekup.render template #<input autocomplete="false" />
 
 IE conditionals:
