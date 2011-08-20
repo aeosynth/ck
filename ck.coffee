@@ -33,6 +33,12 @@ for tag in 'a abbr address article aside audio b bdi bdo blockquote body button 
 for tag in 'area base br col command embed hr img input keygen link meta param source track wbr'.split ' '
   compile tag, true #selfClosing
 
+###
+http://www.w3.org/TR/html5-author/obsolete.html#non-conforming-features
+Elements in the following list are entirely obsolete, and must not be used by authors:
+applet acronym bgsound dir frame frameset noframes isindex listing nextid noembed plaintext rb strike xmp basefont big blink center font marquee multicol nobr spacer tt
+###
+
 @render = (template) ->
   html = ''
   code = template.toString().replace 'function () ', ''
