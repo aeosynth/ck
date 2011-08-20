@@ -1,5 +1,5 @@
 doctypes =
-  5: '<!doctype html>'
+  5: '<!DOCTYPE html>'
 html = null
 scope =
   doctype: (doctype) ->
