@@ -21,7 +21,7 @@ compile = (tag, selfClosing) ->
     for arg in args
       if typeof arg is 'function'
         arg()
-      else
+      else #string or number
         html += arg
 
     html += "</#{tag}>"
