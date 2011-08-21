@@ -1,0 +1,15 @@
+{
+  "author": "James Campos <james.r.campos@gmail.com> (https://github.com/aeosynth)",
+  "name": "ck",
+  "description": "A smaller, faster CoffeeKup",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aeosynth/ck.git"
+  },
+  "main": "ck.coffee",
+  "dependencies": {
+    "coffee-script": "~1.1.2"
+  },
+  "private": true
+}
