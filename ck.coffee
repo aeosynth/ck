@@ -1,3 +1,6 @@
+cs = require 'coffee-script'
+fs = require 'fs'
+
 doctypes =
   5: '<!DOCTYPE html>'
 html = null
@@ -41,5 +44,10 @@ for tag in 'a abbr address article aside audio b bdi bdo blockquote body button 
 
 @render = (template) ->
   html = ''
-  code = template.toString().replace 'function () ', ''
-  Function('scope', "with (scope) #{code}") scope
+  if typeof template is 'function'
+    code = template.toString().replace 'function () ', ''
+  else #string
+    data = fs.readFileSync template, 'utf8'
+    code = cs.compile data, bare: true
+  Function('scope', "with (scope) {#{code}}") scope
+  html
