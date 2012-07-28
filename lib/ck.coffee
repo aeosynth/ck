@@ -1,8 +1,5 @@
 #[coffeekup](http://github.com/mauricemach/coffeekup) rewrite
 
-cs = require 'coffee-script'
-fs = require 'fs'
-
 doctypes =
   '1.1':          '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">'
   '5':            '<!DOCTYPE html>'
@@ -86,15 +83,17 @@ for tag in tagsNormal
 for tag in tagsSelfClosing
   compileTag tag, true # self close
 
-@compileFile = (path) ->
+compileFile = (path) ->
+  fs = require 'fs'
   code = fs.readFileSync path, 'utf8'
-  @compile code
+  compile code
 
-@compile = (code) ->
+compile = (code) ->
   code =
     if typeof code is 'function'
       code.toString().replace 'function () ', ''
     else
+      cs = require 'coffee-script'
       cs.compile code, bare: true
   fn = Function 'scope', "with (scope) { #{code} }"
   (_options) ->
@@ -104,3 +103,5 @@ for tag in tagsSelfClosing
     newline = if options.format then '\n' else ''
     fn.call options.context, scope
     html
+
+window.ck = {compile, scope, esc: scope.esc}
