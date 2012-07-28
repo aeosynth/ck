@@ -45,7 +45,7 @@ compileTag = (tag, selfClosing) ->
         if typeof val is 'boolean'
           html += " #{key}" if val is true
         else
-          html += " #{key}=\"#{val}\""
+          html += " #{key}=\"#{val ? ''}\""
 
     html += ">"
 
