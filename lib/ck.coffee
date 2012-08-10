@@ -33,8 +33,8 @@ nest = (arg) ->
     # wrap up property accessing in a function.
     if arg is undefined
       html += "#{newline}#{indent}"
-      return
-  html += if options.autoescape then esc arg else arg
+  if typeof arg is 'string'
+    html += if options.autoescape then scope.esc arg else arg
 
 compileTag = (tag, selfClosing) ->
   scope[tag] = (args...) ->
