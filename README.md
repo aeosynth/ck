@@ -36,3 +36,5 @@ IE conditionals:
 #other
 
 ck doesn't add slashes to self closing tags. I'm not actually sure what's right, see [this](http://stackoverflow.com/questions/348736/xhtml-is-writing-self-closing-tags-for-elements-not-traditionally-empty-bad-pra) for some reading....
+
+recently another attempt was made at minimizing the coffeecup engine called [coffee-templates](https://github.com/mikesmullin/coffee-templates). it was inspired by and uses some of the same techniques as ck, so may be worth a look, as well.
